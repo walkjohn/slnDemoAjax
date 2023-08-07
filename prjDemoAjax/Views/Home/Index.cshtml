@@ -1,0 +1,74 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+<table id="empTable" class="table table-bordered table-hover table-striped">
+    <thead>
+        <tr>
+            <th>姓名</th>
+            <th>年資</th>
+            <th>薪水</th>
+        </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+</table>
+
+@section Styles{
+    <style>
+        p{
+            background-color: yellow
+        }
+    </style>
+}
+
+@section Scripts{
+    <script>
+        
+        //jquery改字樣
+        $('.display-4').on('mouseover', function(){
+            $(this).css('color','blue')
+        }).on('mouseout',function(){
+            $(this).css('color','black')
+        })
+
+        //emp=物件，employees=屬性
+        //讀取JSON資料
+        const emp = {
+            "employees": [
+                { "name": "Tom", "workYears": 3, "salary": 35000 },
+                { "name": "Jack", "workYears": 5, "salary": 40000 },
+                { "name": "Mary", "workYears": 7, "salary": 45000 }
+            ]
+        }
+
+        console.log(emp.employees)
+
+       for (let i =0; i<emp.employees.length; i++)
+       {
+           console.log(emp.employees[i].name)
+           console.log(emp.employees[i].workYears)
+           console.log(emp.employees[i].salary)
+       }
+
+       //顯示JSON資料，存進table中
+       const datas = emp.employees.map((employee)=>{
+           const {name, workYears, salary} = employee
+           return(
+               `<tr>
+                    <td>${name}</td>
+                    <td>${workYears}</td>
+                    <td>${salary}</td>
+               </tr>
+               `
+           )         
+       })
+
+        document.querySelector('#empTable>tbody').innerHTML = datas.join("")
+    </script>
+}
