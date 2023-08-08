@@ -1,0 +1,100 @@
+﻿
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h1>Register</h1>
+
+<div class="row">
+    <div class="col-3"></div>
+    <div class="col-6">
+        @*action=傳入數值的方法路徑*@
+        @*method=get(在網址上會看到輸入值)，method=get(在網址上看不到輸入值，數值存入封包傳送)*@
+       @* <form action="~/Api/GetDemo" method="post">*@
+           <form id="mainform">
+            <div class="mb-3">
+                <label for="userName" class="form-label">User Name</label>
+                <input type="text" class="form-control" id="userName" placeholder="your name" name="Name">
+                <div class="alert alert-warning" id="checkcheck"></div>
+            </div>
+            <div class="mb-3">
+                <label for="userAge" class="form-label">User Age</label>
+                <input type="number" class="form-control" id="userAge" placeholder="your age" name="Age">
+            </div>
+            <div class="mb-3">
+                <label for="userEmail" class="form-label">User Email</label>
+                <input type="email" class="form-control" id="userEmail" placeholder="your email" name="Email">
+            </div>
+            <div class="mb-3">
+                <label for="formFile" class="form-label">Photo：</label>
+                <input class="form-control" type="file" id="formFile" name="file">
+            </div>
+            <button class="btn btn-primary" type="submit" id="button1">送出</button>
+
+        </form>
+         <div class="alert alert-info" id="div1" ></div>
+    </div>
+    <div class="col-3">
+        <a href="https://www.ispan.com.tw" id="a1">iSpan</a>
+    </div>
+
+</div>
+
+@section Styles{
+    <style></style>
+}
+
+@section Scripts{
+    <script>
+        const btn = document.querySelector('#button1')
+        const alink= document.querySelector('#a1')
+        const txtName = document.querySelector('#userName')
+        const txtAge = document.querySelector('#userAge')
+        const myDiv = document.querySelector('#div1')
+        const warning = document.querySelector('#checkcheck')
+
+        btn.addEventListener('click',myevent=>{
+            myevent.preventDefault(); //防止預設行為發生
+
+            const xhr = new XMLHttpRequest();
+
+            xhr.open('POST', '/Api/Register')
+            //xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+            //xhr.send(`name=${txtName.value}&age=${txtAge.value}`)
+
+            //上面二行註解掉改用FormData
+            const formdata= new FormData(document.querySelector('#mainform'));
+            xhr.send(formdata);
+
+            xhr.addEventListener('load', () => {
+                const data = xhr.responseText
+                myDiv.innerHTML = data;
+        })
+        })
+
+        //連結按下去時跳出提醒視窗詢問是否動作
+        alink.addEventListener('click',event=>{
+            if(!window.confirm("真的要前往連結嗎?????"))
+            {
+                event.preventDefault();
+            }
+        })
+
+        txtName.addEventListener('blur',event=>{
+            const xhr= new XMLHttpRequest();
+            xhr.open('POST', '/Api/CheckName')
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+            xhr.send(`name=${txtName.value}`)
+
+            xhr.addEventListener('load',()=>{
+             const data = xhr.responseText
+             warning.innerHTML=data;
+            } )
+           
+        })
+
+    </script>
+
+
+}
+

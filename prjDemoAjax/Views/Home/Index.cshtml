@@ -14,7 +14,7 @@
             <th>薪水</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="workers">
 
     </tbody>
 </table>
@@ -56,19 +56,29 @@
            console.log(emp.employees[i].salary)
        }
 
-       //顯示JSON資料，存進table中
-       const datas = emp.employees.map((employee)=>{
-           const {name, workYears, salary} = employee
-           return(
-               `<tr>
-                    <td>${name}</td>
-                    <td>${workYears}</td>
-                    <td>${salary}</td>
-               </tr>
-               `
-           )         
-       })
+       //顯示JSON資料，存進table中(JavaScript)
+       //const datas = emp.employees.map((employee)=>{
+       //    const {name, workYears, salary} = employee
+       //    return(
+       //        `<tr>
+       //             <td>${name}</td>
+       //             <td>${workYears}</td>
+       //             <td>${salary}</td>
+       //        </tr>
+       //        `
+       //    )
+       // document.querySelector('#empTable>tbody').innerHTML = datas.join("")
+       //})
 
-        document.querySelector('#empTable>tbody').innerHTML = datas.join("")
+        //顯示JSON資料，存進table中(JQuery寫法)
+       $('#workers').html(emp.employees.map(employee=>
+            `<tr>
+                    <td>${employee.name}</td>
+                    <td>${employee.workYears}</td>
+                    <td>${employee.salary}</td>
+            </tr>
+            `
+       ).join(""));
+
     </script>
 }

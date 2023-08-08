@@ -1,0 +1,39 @@
+﻿
+@{
+    ViewData["Title"] = "GetDemo";
+}
+
+<h1>GetDemo</h1>
+<div class="alert alert-info" id="div1"></div>
+
+
+@section Styles{
+
+}
+
+@section Scripts{
+    <script>
+    //1. 建立Ajax物件
+        const xhr = new XMLHttpRequest();
+
+    //      2. 對伺服器發送要求
+        xhr.open('GET', '/Api/index');
+        xhr.send();
+
+     //      3. 透過load接收非同步回傳結果
+        xhr.addEventListener("load", () => {
+            var data = xhr.responseText;
+
+     //      4. 讀出回傳結果
+      console.log(data);
+    
+     //      5. 顯示回傳結果=> 透過JavaScript
+    
+            //document.getElementById('#div1').innerHTML = `<h3>${data}</h3>`
+    })
+    
+
+
+    </script>
+}
+

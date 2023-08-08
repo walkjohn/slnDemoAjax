@@ -7,29 +7,72 @@
 <button id="button1" class="btn btn-primary">Click</button>
 <div class="alert alert-info" id="div1"></div>
 <button id="button2" class="btn btn-primary">Click</button>
+<button id="button3" class="btn btn-danger">取消</button>
 <div class="alert alert-info" id="div2"></div>
+<img src="~/images/hourglass.gif" id="loading" />
 
 @section Styles{
+    <style>
+        #loading{
+            display: none;
+        }
+    </style>
 
 }
 
 @section Scripts{
     <script>
+        
+        //練習一
         const btn = document.querySelector('#button1');
         const myDiv = document.querySelector('#div1');
         btn.addEventListener('click',()=>{
             myDiv.innerHTML="Button Click"
         })
 
+        //練習二
         const btn2 = document.querySelector('#button2');
+        const btnCancel = document.querySelector('#button3');
         const myDiv2=document.querySelector('#div2');
+        const hourglass = document.querySelector('#loading');
+
 
         //步驟一，建立XMLHRequest物件
         const xhr= new XMLHttpRequest();
 
+        xhr.addEventListener('loadstart', () => {
+            btn2.setAttribute('disabled', 'disabled');
+            btn2.textContent="執行中請稍後......";
+            hourglass.style.display = "inline";
+            myDiv2.innerHTML += `<h3>Ajax開始</h3>`
+        })
+
+        xhr.addEventListener('loadend', () => {
+            btn2.removeAttribute('disabled');
+            btn2.textContent="Click";
+            hourglass.style.display= "none";
+            myDiv2.innerHTML += `<h3>Ajax結束</h3>`
+        })
+
+        xhr.addEventListener('timeout',()=>{
+            myDiv2.innerHTML += `<h3>伺服器忙碌中，請稍後再來</h3>`
+        })
+
+        //按下按鈕，呼叫abort()方法停止 Ajax 程式的執行
+        btnCancel.addEventListener('click',()=>{
+            xhr.abort();
+        })
+
+        //abort()方法執行時，觸發abort事件
+        xhr.addEventListener('abort',()=>{
+            myDiv2.innerHTML += `<h3>您停止了Ajax程式</h3>`
+        })
+
+
         btn2.addEventListener('click',()=>{
          //步驟二對伺服器發出要求(Request)
          xhr.open('GET', '/api/index');
+         xhr.timeout=3000;  //3秒後程式timeout
          xhr.send();
 
          //步驟三接收伺服器回傳的資料
@@ -37,10 +80,8 @@
              const data = xhr.responseText
                 //步驟四讀資料 JSON XML
                 //步驟五顯示資料
-                myDiv2.innerHTML=`<h3>${data}</h3>`
-
+                myDiv2.innerHTML+=`<h3>${data}</h3>`
          })
-
         })
 
     </script>
