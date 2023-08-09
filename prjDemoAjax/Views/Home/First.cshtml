@@ -71,7 +71,7 @@
 
         btn2.addEventListener('click',()=>{
          //步驟二對伺服器發出要求(Request)
-         xhr.open('GET', '/api/index');
+            xhr.open('GET', '@Url.Content("/api/index")'); //建議路徑寫法 
          xhr.timeout=3000;  //3秒後程式timeout
          xhr.send();
 

@@ -4,30 +4,36 @@
 }
 
 <h1>Travel</h1>
-<div class="card" style="width: 18rem;" id="cc">
+<div  id="cc">
    
 </div>
 
 @section Styles{
 
 }
-
+<script src="/datas/travel.js"></script>
 @section Scripts{
-    <script src="~\datas\travel.js"></script>
+    
     <script>
+        //const imagelink = spots.CommonFormat.Section[0].file.img[0].text;
+        //console.log(imagelink);
+
         const DATAS= spots.CommonFormat.Section.map(x=>{
-            const{stitle,xbody,xurl }=x
-            return(
-            `<div class="card" style="width: 18rem;">
-                  <img src="..." class="card-img-top" alt="...">
+            if(x.file.img && x.file.img.length>0 &&x.file.img[0].text)
+            {  
+                const p = x.file.img[0].text;
+                const{stitle,xbody,xurl }=x;
+                return(
+            `<div class="card" style="width: 18rem; float: left">
+                   <img src="${p}" class="card-img-top" alt="...">
                   <div class="card-body">
                      <h5 class="card-title">${stitle}</h5>
                              <p class="card-text">${xbody}</p>
                             <a href="${xurl}" class="btn btn-primary">更多介紹</a>
                  </div>
-            </div>  
+             </div>  
             `
-           )
+                )}
         })
         //console.log(DATAS)
         document.querySelector('#cc').innerHTML=DATAS.join("")

@@ -18,8 +18,9 @@ namespace prjDemoAjax.Controllers
         public IActionResult Index()
         {
             //被呼叫執行時會先停6000毫秒
-            System.Threading.Thread.Sleep(6000);
-            return Content("Hello Ajax!! First Ajax Program");
+            //System.Threading.Thread.Sleep(6000);
+            //return Content("Hello Ajax!! First Ajax Program");
+            return Content("Hello Fetch");
         }
 
         public IActionResult GetDemo(CUser user)/*public IActionResult GetDemo(string name, int age = 30)*/
@@ -60,6 +61,32 @@ namespace prjDemoAjax.Controllers
             return Content("註冊成功");
         }
 
+        public IActionResult GetImageByte(int id=1)
+        {
+            Members? member = _context.Members.Find(id);
+            byte[]? img = member.FileData;
+            return File(img, "image/jpeg");
+        }
+
+        public IActionResult City()
+        {
+            var cities = _context.Address.Select(c=>c.City).Distinct();
+            return Json(cities);
+        }
+
+        public IActionResult Districts(string city)
+        {
+            var districts = _context.Address.Where(a => a.City == city).Select(c => c.SiteId).Distinct();
+            return Json(districts);
+        }
+
+        public IActionResult Roads(string siteId)
+        {
+            var roads = _context.Address.Where(a => a.SiteId == siteId).Select(c => c.Road).Distinct();
+            return Json(roads);
+        }
+
+        //下面是作業
         public IActionResult CheckName(Members member)
         {
             if(string.IsNullOrEmpty(member.Name))

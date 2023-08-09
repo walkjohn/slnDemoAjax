@@ -54,22 +54,41 @@
         const warning = document.querySelector('#checkcheck')
 
         btn.addEventListener('click',myevent=>{
-            myevent.preventDefault(); //防止預設行為發生
+            myevent.preventDefault(); //防止預設行為發生(使用者重複點)
 
-            const xhr = new XMLHttpRequest();
+        //    const xhr = new XMLHttpRequest();
 
-            xhr.open('POST', '/Api/Register')
-            //xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
-            //xhr.send(`name=${txtName.value}&age=${txtAge.value}`)
+        //    xhr.open('POST', '@Url.Content("/Api/Register")')
+        //    //xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+        //    //xhr.send(`name=${txtName.value}&age=${txtAge.value}`)
 
-            //上面二行註解掉改用FormData
-            const formdata= new FormData(document.querySelector('#mainform'));
-            xhr.send(formdata);
+        //    //上面二行註解掉改用FormData
+        //    const formdata= new FormData(document.querySelector('#mainform'));
+        //    xhr.send(formdata);
 
-            xhr.addEventListener('load', () => {
-                const data = xhr.responseText
-                myDiv.innerHTML = data;
-        })
+        //    xhr.addEventListener('load', () => {
+        //        const data = xhr.responseText
+        //        myDiv.innerHTML = data;
+        //})
+
+
+            //上面註解掉的為舊式XMLHttpRequest寫法，以下改用Fetch傳送FormData到server端
+            const formdata = new FormData(document.querySelector('#mainform'));
+            fetch('@Url.Content("/Api/Register")', {
+                body:formdata,
+                method: 'POST'
+            })
+            .then(response=>{
+                if(response.ok)
+                {
+                    alert("新增formdata成功")
+                    location.href='@Url.Content("/members")'
+                }
+                else
+                {
+                    alert("有錯誤!!!")
+                }
+            })
         })
 
         //連結按下去時跳出提醒視窗詢問是否動作
@@ -82,7 +101,7 @@
 
         txtName.addEventListener('blur',event=>{
             const xhr= new XMLHttpRequest();
-            xhr.open('POST', '/Api/CheckName')
+            xhr.open('POST', '@Url.Content("/Api/CheckName")')
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
             xhr.send(`name=${txtName.value}`)
 
