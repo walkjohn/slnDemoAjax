@@ -11,7 +11,7 @@
         @*action=傳入數值的方法路徑*@
         @*method=get(在網址上會看到輸入值)，method=get(在網址上看不到輸入值，數值存入封包傳送)*@
        @* <form action="~/Api/GetDemo" method="post">*@
-           <form id="mainform">
+           <form id="mainform" enctype="multipart/form-data" action="">
             <div class="mb-3">
                 <label for="userName" class="form-label">User Name</label>
                 <input type="text" class="form-control" id="userName" placeholder="your name" name="Name">
@@ -27,8 +27,12 @@
             </div>
             <div class="mb-3">
                 <label for="formFile" class="form-label">Photo：</label>
-                <input class="form-control" type="file" id="formFile" name="file">
+                <input class="form-control" type="file" id="formFile" name="file" onchange="postData()">
             </div>
+            <div class="mb-3">
+                <img id="imgPreview"/>
+            </div>
+
             <button class="btn btn-primary" type="submit" id="button1">送出</button>
 
         </form>
@@ -108,9 +112,52 @@
             xhr.addEventListener('load',()=>{
              const data = xhr.responseText
              warning.innerHTML=data;
-            } )
-           
+            } )         
         })
+
+
+        //作業: 圖片上傳預覽
+        const imgPre = document.querySelector('#formFile')
+
+        imgPre.addEventListener('change', function () {
+            const reader = new FileReader();
+            if (this.files.length > 0) {
+                reader.readAsDataURL(this.files[0]);
+            }
+
+        reader.onload = function (e) {
+            document.querySelector('#imgPreview').src = e.target.result;
+        };
+        })
+
+
+
+        //沒有作用圖片上傳預覽
+        // const basePath = getContextPath();
+
+        // function getContextPath() {
+        //     const pathName = window.document.location.pathname;
+        //     const projectName = pathName.substring(0, pathName.substr(1).indexOf('/') + 1);
+        //     return projectName;
+        // }
+
+        // function postData() { 
+        //     const formData = new FormData();
+        //     formData.append("file", $('#formFile')[0].files[0])
+        //     $.ajax({
+        //         url: basePath + "/upload.action",
+        //         type: post,
+        //         data: formData,
+        //         processData: false,
+        //         contentType: false,
+        //         dataType: 'text',
+        //         success: function (data) {
+        //             const paras = JSON.parse(data)
+        //             $('imgPreview').attr("src", paras);
+        //         }
+        //         error: function (data) { }
+        //     });
+        // }
 
     </script>
 

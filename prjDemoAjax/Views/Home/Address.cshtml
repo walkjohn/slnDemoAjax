@@ -20,58 +20,93 @@
         const selRoad = document.querySelector('#selectRoad')
         const myDiv = document.querySelector('#div1');
 
-        function loadCity(){
-            const xhr = new XMLHttpRequest();
-            xhr.open('GET','@Url.Content("/Api/City")');
-            xhr.send();
-            xhr.addEventListener('load',()=>{
-            const datas = JSON.parse(xhr.responseText) 
-            const cities = datas.map(city=>`<option value=${city}>${city}</option>`);
-            selCity.innerHTML = cities.join("");
-                loadDistrict();
-            })
-        }
-
-        function loadDistrict() {
-            const xhr = new XMLHttpRequest();
-            xhr.open('GET', `@Url.Content("/Api/Districts")?city=${selCity.value}`);
-            xhr.send();
-            xhr.addEventListener('load', () => {
-                const datas = JSON.parse(xhr.responseText)
-                const districts = datas.map(district => `<option value=${district}>${district}</option>`);
-                selDistrict.innerHTML = districts.join("");
-                loadRoad();
-            })
-        }
-
-        function loadRoad() {
-            const xhr = new XMLHttpRequest();
-            xhr.open('GET', `@Url.Content("/Api/Roads")?SiteId=${selDistrict.value}`);
-            xhr.send();
-            xhr.addEventListener('load',()=> {
-                const datas = JSON.parse(xhr.responseText)
-                const roads = datas.map(road => `<option value=${road}>${road}</option>`);
-                selRoad.innerHTML= roads.join("");
-                show()
-            })
-        }
+        // 舊式XMLHttpRequest寫法
+        // function loadCity(){        
+        //     const xhr = new XMLHttpRequest();
+        //     xhr.open('GET','atUrl.Content("/Api/City")');
+        //     xhr.send();
+        //     xhr.addEventListener('load',()=>{
+        //     const datas = JSON.parse(xhr.responseText) 
+        //     const cities = datas.map(city=>`<option value=${city}>${city}</option>`);
+        //     selCity.innerHTML = cities.join("");
+           
+        //       loadDistrict();
+        // }
 
         loadCity();
+
+       //作業:新式Fetch()寫法
+        async function loadCity() {         
+            const response = await fetch('@Url.Content("~/Api/City")');
+            const datas = await response.json();
+            const cities = datas.map(city => `<option value=${city}>${city}</option>`);
+            selCity.innerHTML = cities.join("");
+
+            loadDistrict();
+        }
+
+        // 舊式XMLHttpRequest寫法
+        // function loadDistrict() {
+        //     const xhr = new XMLHttpRequest();
+        //     xhr.open('GET', `atUrl.Content("/Api/Districts")?city=${selCity.value}`);
+        //     xhr.send();
+        //     xhr.addEventListener('load', () => {
+        //        const datas = JSON.parse(xhr.responseText)
+        //        const districts = datas.map(district => `<option value=${district}>${district}</option>`);
+        //        selDistrict.innerHTML = districts.join("");
+      
+        //     loadRoad();
+        // }
+
+
+        //作業:新式Fetch()寫法
+        async function loadDistrict(){
+             const response= await fetch(`@Url.Content("~/Api/Districts")?city=${selCity.value}`)
+             const datas = await response.json();
+            const districts = datas.map(district => `<option value=${district}>${district}</option>`)
+            selDistrict.innerHTML = districts.join("");
+
+            loadRoad();
+        }
+
+
+         // 舊式XMLHttpRequest寫法
+        // function loadRoad() {
+        //     const xhr = new XMLHttpRequest();
+        //     xhr.open('GET', `atUrl.Content("/Api/Roads")?SiteId=${selDistrict.value}`);
+        //     xhr.send();
+        //     xhr.addEventListener('load',()=> {
+        //        const datas = JSON.parse(xhr.responseText)
+        //        const roads = datas.map(road => `<option value=${road}>${road}</option>`);
+        //        selRoad.innerHTML= roads.join("");
+  
+        //     show()
+        // }
+
+       //作業:新式Fetch()寫法
+        async function loadRoad(){
+            const response = await fetch(`@Url.Content("~/Api/Roads")?SiteId=${selDistrict.value}`)
+            const datas = await response.json();
+            const roads = datas.map(road => `<option value=${road}>${road}</option>`);
+            selRoad.innerHTML = roads.join("");
+          
+            show();
+
+        }
+
+   
        
            selCity.addEventListener('change',()=>{
              //myDiv.textContent=selCity.value ;
-            loadDistrict();
-           
+            loadDistrict();          
              })
 
              selDistrict.addEventListener('change',()=>{
              //myDiv.textContent+=selDistrict.value;
-             loadRoad();
-             
+             loadRoad();           
              })
 
              selRoad.addEventListener('change', show)
-
              function show(){
                 myDiv.textContent = `${selDistrict.value} ${selRoad.value}`
              }

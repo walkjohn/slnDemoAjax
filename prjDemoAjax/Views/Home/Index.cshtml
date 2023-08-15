@@ -5,6 +5,9 @@
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    @Html.Partial("Partial1")
+    @Html.Partial("Partial2") @*有傳值進來時這樣無法顯示對應畫面*@
+@*    @Html.Action("Partial2") core沒有支援action，也無法對應顯示畫面*@
 </div>
 <table id="empTable" class="table table-bordered table-hover table-striped">
     <thead>

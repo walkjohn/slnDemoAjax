@@ -48,10 +48,40 @@ namespace prjDemoAjax.Controllers
             return View();
         }
 
+        public IActionResult AutoComplete()
+        {
+            return View();
+        }
+
         public IActionResult Travel()
         {
             return View();
         }
+
+        public IActionResult jQuery()
+        {
+            return View();
+        }
+
+        public IActionResult History()
+        {
+            return View();
+        }
+
+        public IActionResult Partial1()
+        {
+            //回傳PartialView()=回傳網頁上部分畫面
+            //沒有傳值到view
+            return PartialView();
+        }
+        public IActionResult Partial2()
+        {
+            //回傳PartialView()=回傳網頁上部分畫面
+            //有傳值到View中
+            ViewBag.message = "經過此Partial2 Action";
+            return PartialView();
+        }
+
 
         public IActionResult Privacy()
         {

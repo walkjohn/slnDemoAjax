@@ -1,0 +1,37 @@
+﻿
+@{
+    ViewData["Title"] = "AutoComplete";
+}
+
+<h1>AutoComplete</h1>
+
+<form>
+    <input type="text" name="txtHere" id="txtHere" />
+    <div>
+        <ul class="list-group" id="result">
+        </ul>
+    </div>
+</form>
+
+@section Scripts{
+    <script>
+        const history = document.querySelector('#txtHere');
+            
+        history.addEventListener('input', () => {
+            typeHistory();
+        })
+
+        async function typeHistory() {
+            const response = await fetch(`@Url.Content("~/Home/AutoComplete")?keyword=${history.value}`);
+            const datas = await response.json();
+
+            if (datas != null) {
+                const allHistory = data.map(aH => `<li class="list-group-item" id = "showup" >${aH}</li>`)
+                document.querySelector('#result').innerHTML = allHistory.join("");
+            }
+        }
+
+    </script>
+
+}
+
